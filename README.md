@@ -1,7 +1,7 @@
 # STEP:1 you need to clone the repo by using
 
  
-  git clone path   
+  git clone  repo path   
 
 
 # STEP: 2 Install all packages using
@@ -37,11 +37,6 @@ npm run dev
 or 
 
 yarn dev
-
-
-
-
-
 
 
 ## Production
