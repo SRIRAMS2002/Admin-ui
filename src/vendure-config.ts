@@ -9,6 +9,8 @@ import {
   defaultOrderProcess,
   dummyPaymentHandler,
 } from '@vendure/core';
+import { BullMQJobQueuePlugin } from '@vendure/job-queue-plugin/package/bullmq';
+
 import { EmailPlugin, defaultEmailHandlers } from '@vendure/email-plugin';
 import 'dotenv/config';
 import { orderCanceledNotificationProcess } from './customOrderProcess/order-canceled-notification-process';
@@ -83,7 +85,39 @@ export const config: VendureConfig = {
       assetUploadDir: path.join(__dirname, '../static/assets'),
       assetUrlPrefix: IS_DEV ? undefined : 'https://www.my-shop.com/assets',
     }),
-    DefaultJobQueuePlugin.init({ useDatabaseForBuffer: true }),
+    // DefaultJobQueuePlugin.init({ useDatabaseForBuffer: true }),
+
+    BullMQJobQueuePlugin.init({
+      connection: {
+        host: process.env.REDIS_HOST,
+        port: Number(process.env.REDIS_PORT),
+        username: process.env.REDIS_USERNAME,  
+        password: process.env.REDIS_PASSWORD,
+        maxRetriesPerRequest: null,
+      },
+      setRetries: (queueName, job) => {
+        if (queueName === 'send-email') {
+          return 10; 
+        }
+        return job.retries ?? 3;
+      },
+      setBackoff: () => {
+        return {
+          type: 'exponential',
+          delay: 10000,
+        };
+      },
+      workerOptions: {
+        removeOnComplete: {
+          age: 60 * 60 * 24 * 7 ,
+          count: 5000,
+        },
+        removeOnFail: {
+          age: 60 * 60 * 24 * 7,
+          count: 1000,
+        },
+      },
+    }),
     DefaultSearchPlugin.init({ bufferUpdates: false, indexStockStatus: true }),
     EmailPlugin.init({
       devMode: true,

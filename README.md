@@ -1,27 +1,23 @@
-# store1
+# STEP:1 you need to clone the repo by using
 
-This project was generated with [`@vendure/create`](https://github.com/vendure-ecommerce/vendure/tree/master/packages/create).
+ 
+  git clone path   
 
-Useful links:
 
-- [Vendure docs](https://www.vendure.io/docs)
-- [Vendure Slack community](https://join.slack.com/t/vendure-ecommerce/shared_invite/zt-1exzio25w-vjL5TYkyJZjK52d6jkOsIA)
-- [Vendure on GitHub](https://github.com/vendure-ecommerce/vendure)
-- [Vendure plugin template](https://github.com/vendure-ecommerce/plugin-template)
+# STEP: 2 Install all packages using
 
-## Directory structure
+npm install
 
-* `/src` contains the source code of your Vendure server. All your custom code and plugins should reside here.
-* `/static` contains static (non-code) files such as assets (e.g. uploaded images) and email templates.
+# STEP: 3 Then migrate the code with databases 
 
-## Development
 
-```
-yarn dev
-```
+npx vendure migrate
 
-will start the Vendure server and [worker](https://www.vendure.io/docs/developer-guide/vendure-worker/) processes from
-the `src` directory.
+
+# STEP: 4 Then compile the admin ui using
+
+
+npm run build:admin
 
 ## Build
 
@@ -31,10 +27,31 @@ yarn build
 
 will compile the TypeScript sources into the `/dist` directory.
 
+
+
+# STEP: 5  then run the server using Development
+
+
+npm run dev
+
+or 
+
+yarn dev
+
+
+
+
+
+
+
 ## Production
 
 For production, there are many possibilities which depend on your operational requirements as well as your production
 hosting environment.
+
+```
+npm run start
+```
 
 ### Running directly
 
